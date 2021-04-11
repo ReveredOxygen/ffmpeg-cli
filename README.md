@@ -4,7 +4,7 @@ Sometimes you just want a simple way to use ffmpeg. Most crates just use ffi, le
 complicated interfaces. `ffmpeg_cli` avoids this by wrapping the cli, for when you don't need
 the flexibility the real ffmpeg api gives you.
 
-```no_run
+```rs
 use std::process::Stdio;
 
 use ffmpeg_cli::{FfmpegBuilder, File, Parameter};
