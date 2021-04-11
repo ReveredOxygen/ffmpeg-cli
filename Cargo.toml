@@ -1,0 +1,20 @@
+[package]
+name = "ffmpeg-cli"
+version = "0.1.0"
+authors = ["ReveredOxygen <ReveredOxygen@gmail.com>"]
+license = "GPL-2.0-or-later"
+repository = "https://github.com/ReveredOxygen/ffmpeg-cli"
+homepage = "https://github.com/ReveredOxygen/ffmpeg-cli"
+description = "Wraps the ffpmeg cli, using `-progress` to report progress"
+readme = "README.md"
+keywords = ["audio", "video", "ffmpeg"]
+categories = ["multimedia"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+tokio = {version = "1.*", features = ["net", "io-util", "rt", "macros", "rt-multi-thread"]}
+futures-core = "0.3.*"
+futures = "0.3.*"
+thiserror = "1.*"
