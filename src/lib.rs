@@ -85,7 +85,7 @@ pub struct File<'a> {
 }
 
 /// A global or file option to be passed to ffmpeg.
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub enum Parameter<'a> {
     /// An option which does not take a value, ex. `-autorotate`.
     ///
