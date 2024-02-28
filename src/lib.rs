@@ -211,11 +211,12 @@ impl<'a> File<'a> {
 impl<'a> Parameter<'a> {
     fn push_to(&self, command: &mut Command) {
         match &self {
-            Parameter::Single(arg) => command.arg("-".to_owned() + arg),
+            Parameter::Single(arg) if arg.len() > 0 => command.arg("-".to_owned() + arg),
             Parameter::KeyValue(key, value) => {
                 command.arg("-".to_owned() + key);
                 command.arg(value)
             }
+            _ => command.arg(""),
         };
     }
 }
