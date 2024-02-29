@@ -216,7 +216,7 @@ impl<'a> Parameter<'a> {
                 command.arg("-".to_owned() + key);
                 command.arg(value)
             }
-            _ => command.arg(""),
+            _ => command,
         };
     }
 }
