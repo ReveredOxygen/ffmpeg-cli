@@ -132,38 +132,59 @@ impl<'a> FfmpegBuilder<'a> {
 
                 if let Some((key, value)) = parse_line(&line) {
                     match key {
-                        "frame" => match value.parse() {
-                            Ok(x) => progress.frame = Some(x),
-                            Err(e) => handle_parse_error(&mut tx, e, value).await,
+                        "frame" => match value {
+                            "N/A" => progress.frame = None,
+                            x => match x.parse() {
+                                Ok(x) => progress.frame = Some(x),
+                                Err(e) => handle_parse_error(&mut tx, e, x).await,
+                            },
                         },
-                        "fps" => match value.parse() {
-                            Ok(x) => progress.fps = Some(x),
-                            Err(e) => handle_parse_error(&mut tx, e, value).await,
+                        "fps" => match value {
+                            "N/A" => progress.fps = None,
+                            x => match x.parse() {
+                                Ok(x) => progress.fps = Some(x),
+                                Err(e) => handle_parse_error(&mut tx, e, x).await,
+                            },
+                        },
+                        "total_size" => match value {
+                            "N/A" => progress.total_size = None,
+                            x => match x.parse() {
+                                Ok(x) => progress.total_size = Some(x),
+                                Err(e) => handle_parse_error(&mut tx, e, x).await,
+                            },
                         },
                         // TOOD: bitrate
-                        "total_size" => match value.parse() {
-                            Ok(x) => progress.total_size = Some(x),
-                            Err(e) => handle_parse_error(&mut tx, e, value).await,
+                        "out_time_us" => match value {
+                            "N/A" => progress.out_time = None,
+                            x => match x.parse() {
+                                Ok(us) => progress.out_time = Some(Duration::from_micros(us)),
+                                Err(e) => handle_parse_error(&mut tx, e, x).await,
+                            },
                         },
-                        "out_time_us" => match value.parse() {
-                            Ok(us) => progress.out_time = Some(Duration::from_micros(us)),
-                            Err(e) => handle_parse_error(&mut tx, e, value).await,
+                        "dup_frames" => match value {
+                            "N/A" => progress.dup_frames = None,
+                            x => match x.parse() {
+                                Ok(x) => progress.dup_frames = Some(x),
+                                Err(e) => handle_parse_error(&mut tx, e, x).await,
+                            },
                         },
-                        "dup_frames" => match value.parse() {
-                            Ok(x) => progress.dup_frames = Some(x),
-                            Err(e) => handle_parse_error(&mut tx, e, value).await,
+                        "drop_frames" => match value {
+                            "N/A" => progress.drop_frames = None,
+                            x => match x.parse() {
+                                Ok(x) => progress.drop_frames = Some(x),
+                                Err(e) => handle_parse_error(&mut tx, e, x).await,
+                            },
                         },
-                        "drop_frames" => match value.parse() {
-                            Ok(x) => progress.drop_frames = Some(x),
-                            Err(e) => handle_parse_error(&mut tx, e, value).await,
-                        },
-                        "speed" => {
-                            let num = &value[..(value.len() - 1)];
-                            match num.parse() {
-                                Ok(x) => progress.speed = Some(x),
-                                Err(e) => handle_parse_error(&mut tx, e, num).await,
+                        "speed" => match value {
+                            "N/A" => progress.speed = None,
+                            s => {
+                                let num = &value[..(s.len() - 1)];
+                                match num.parse() {
+                                    Ok(x) => progress.speed = Some(x),
+                                    Err(e) => handle_parse_error(&mut tx, e, num).await,
+                                }
                             }
-                        }
+                        },
                         "progress" => {
                             progress.status = match value {
                                 "continue" => Status::Continue,
